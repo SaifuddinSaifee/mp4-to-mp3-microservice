@@ -10,7 +10,7 @@ def token(req):
         return None, ("Invalid credentials", 401)
     
     res = requests.post(
-        f'http://{os.environ.get("AUTH_SVC_ADDRESS")}/validate',# Posts to gateway/server.py "validate route"
+        f'http://{os.environ.get("AUTH_SVC_ADDRESS")}/validate',# Posts to auth/server.py "validate route"
         headers= {"Authorization": token}
     )
 

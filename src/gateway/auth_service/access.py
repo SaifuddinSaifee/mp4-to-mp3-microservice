@@ -10,13 +10,13 @@ def login(req):
     basicAuth = (auth.username, auth.password)
 
     res = requests.post(
-        f'http://{os.environ.get("AUTH_SVC_ADDRESS")}/login', # Posts to gateway/server.py "login route"
+        f'http://{os.environ.get("AUTH_SVC_ADDRESS")}/login', # Posts to auth/server.py "login route"
         auth = basicAuth
     )
 
     # If response from above is 200
     if res.status_code == 200:
-        return res.txt, 200
+        return res.txt, None
     else:
         return None, (res.txt, res.status_code)
         
