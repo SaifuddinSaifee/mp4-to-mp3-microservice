@@ -1,5 +1,5 @@
 apiVersion: apps/v1 # Specifies the API version to use for the deployment
-kind: Deployment # Defines the type of resource, in this case, a Deployment
+kind: Deployment # Defines the type of resource. creates an object for the k8s file
 metadata:
   name: auth # The name of the deployment
   labels:
