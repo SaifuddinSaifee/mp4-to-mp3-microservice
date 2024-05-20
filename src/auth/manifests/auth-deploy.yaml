@@ -1,0 +1,30 @@
+apiVersion: apps/v1 # Specifies the API version to use for the deployment
+kind: Deployment # Defines the type of resource, in this case, a Deployment
+metadata:
+  name: auth # The name of the deployment
+  labels:
+    app: auth # Labels to identify the deployment and its resources
+spec:
+  replicas: 2 # Number of pod replicas to run
+  selector:
+    matchLabels:
+      app: auth # Selector to identify the pods managed by this deployment
+  strategy:
+    type: RollingUpdate # Strategy type for updating pods
+    rollingUpdate:
+      maxSurge: 3 # Maximum number of additional pods that can be created during an update
+  template:
+    metadata:
+      labels:
+        app: auth # Labels applied to the pods created by this template
+    spec:
+      containers:
+        - name: auth # Name of the container
+          image: saifsaifee/auth-mp4-to-mp3-microservice # Docker image to run in the container
+          ports:
+            - containerPort: 5000 # Port number the container listens on
+          envFrom:
+            - configMapRef:
+                name: auth-configmap # References a ConfigMap for environment variables
+            - secretRef:
+                name: auth-secret # References a Secret for sensitive environment variables

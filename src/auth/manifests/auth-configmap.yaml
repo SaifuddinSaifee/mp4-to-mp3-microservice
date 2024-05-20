@@ -1,0 +1,9 @@
+apiVersion: v1 # Specifies the API version for ConfigMap
+kind: ConfigMap # Defines the type of resource, in this case, a ConfigMap
+metadata:
+  name: auth-configmap # The name of the ConfigMap
+data:
+  MYSQL_HOST: host.minikube.internal # Hostname for the MySQL database
+  MYSQL_USER: auth_user # Username for connecting to the MySQL database
+  MYSQL_DB: auth # Name of the MySQL database
+  MYSQL_PORT: "3306" # Port number on which the MySQL database is listening, specified as a string
