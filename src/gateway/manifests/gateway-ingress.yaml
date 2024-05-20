@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gate-ingress
+  annotations:
+    nginx.ingess.kubernetes.io/proxy-body-size: "0"
+    nginx.ingess.kubernetes.io/proxy-read-timeout: "0"
+    nginx.ingess.kubernetes.io/proxy-send-timeout: "0"
+spec: 
+  rules:
+    - host: mp4-to-mp3converter.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port: 
+                  number: 8080

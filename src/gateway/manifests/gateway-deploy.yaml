@@ -1,0 +1,30 @@
+apiVersion: apps/v1 # Specifies the API version to use for the deployment
+kind: Deployment # Defines the type of resource. creates an object for the k8s file
+metadata:
+  name: gateway # The name of the deployment
+  labels:
+    app: gateway # Labels to identify the deployment and its resources
+spec:
+  replicas: 2 # Number of pod replicas to run
+  selector:
+    matchLabels:
+      app: gateway # Selector to identify the pods managed by this deployment
+  strategy:
+    type: RollingUpdate # Strategy type for updating pods
+    rollingUpdate:
+      maxSurge: 3 # Maximum number of additional pods that can be created during an update
+  template:
+    metadata:
+      labels:
+        app: gateway # Labels applied to the pods created by this template
+    spec:
+      containers:
+        - name: gateway # Name of the container
+          image: saifsaifee/gateway-mp4-to-mp3-microservice # Docker image to run in the container
+          ports:
+            - containerPort: 8080 # Port number the container listens on
+          envFrom:
+            - configMapRef:
+                name: gateway-configmap # References a ConfigMap for environment variables
+            - secretRef:
+                name: gateway-secret # References a Secret for sensitive environment variables
