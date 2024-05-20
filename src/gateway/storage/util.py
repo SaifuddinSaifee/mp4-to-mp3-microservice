@@ -1,5 +1,7 @@
 import pika, json
 
+import pika.spec
+
 # this module is messed up, test again
 
 def upload(file, grid_fs, rabbitmq_channel, access):
@@ -11,9 +13,9 @@ def upload(file, grid_fs, rabbitmq_channel, access):
     try:
         file_id = grid_fs.put(file)
     except Exception as err:
-        return "Something went wrong, file not uploaded", 500
+        return f"Something went wrong, file not uploaded: \nE: {err}", 500
     
-    # If the upload is successful
+    # If the file upload is successful
     message = {
         "video_file_id": str(file_id),
         "audio_file_id": None, # Set this space to mp3's file id
@@ -24,6 +26,13 @@ def upload(file, grid_fs, rabbitmq_channel, access):
     try:
         rabbitmq_channel.basic_publish(
             exchange="",
+            routing_key = "video",
+            body = json.dumps(message), # Convert pythhon to json
+            properties = pika.BasicProperties(
+                delivery_mode = pika.spec.PERSISTENT_DELIVERY_MODE # To make sure the msgs are persisted in the queue in case pod crashes
+            ),
         )
     except:
-        return None
+        # If the queuing fails then remove the file from the db
+        grid_fs.delete(file_id)
+        return "Internal server Error", 500
