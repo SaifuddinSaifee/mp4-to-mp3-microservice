@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: gateway # Name of the container
-          image: saifsaifee/gateway-mp4-to-mp3-microservice # Docker image to run in the container
+          image: saifsaifee/gateway-mp4-to-mp3-microservice:latest # Docker image to run in the container
           ports:
             - containerPort: 8080 # Port number the container listens on
           envFrom:
