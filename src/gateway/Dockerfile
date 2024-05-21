@@ -3,21 +3,22 @@ FROM python:3.11-bookworm
 
 # Update package lists and install essential tools and libraries
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends --no-install-suggests \
-  build-essential default-libmysqlclient-dev \
+  && apt-get install -y --no-install-recommends \
+  build-essential \
+  && rm -rf /var/lib/apt/lists/* \
   && pip install --no-cache-dir --upgrade pip
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the requirements.txt file from the host to the container's working directory
-COPY ./requirements.txt /app
+COPY requirements.txt .
 
 # Install Python dependencies listed in requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the project files from the host to the container's working directory
-COPY . /app
+COPY . .
 
 # Expose port 5000 to allow external connections to the container
 EXPOSE 5000

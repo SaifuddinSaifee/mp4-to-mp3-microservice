@@ -26,7 +26,7 @@ def upload(file, grid_fs, rabbitmq_channel, access):
     try:
         rabbitmq_channel.basic_publish(
             exchange="",
-            routing_key = "video",
+            routing_key = "video", # Later create a queue called "video" in the rabbitmq management panel http://rabbitmq-manager.com/#/queues
             body = json.dumps(message), # Convert pythhon to json
             properties = pika.BasicProperties(
                 delivery_mode = pika.spec.PERSISTENT_DELIVERY_MODE # To make sure the msgs are persisted in the queue in case pod crashes
