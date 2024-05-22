@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: converter  # Name of the deployment
+  labels:
+    app: converter  # Labels to identify the app
+spec:
+  replicas: 4  # Number of pod replicas to maintain
+  selector:
+    matchLabels:
+      app: converter  # Selector to match the pods with the app label
+  strategy:
+    type: RollingUpdate  # Strategy type for deployment updates
+    rollingUpdate:
+      maxSurge: 8  # Maximum number of pods that can be created above the desired number of pods during a rolling update
+  template:
+    metadata:
+      labels:
+        app: converter  # Labels to identify the pods created by this deployment
+    spec:
+      containers:
+        - name: converter  # Name of the container
+          image: saifsaifee/converter-mp4-to-mp3-microservice:latest  # Docker image for the container
+          envFrom:
+            - configMapRef:
+                name: converter-configmap  # Reference to a ConfigMap for environment variables
+            - secretRef:
+                name: converter-secret  # Reference to a Secret for sensitive environment variables
